@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -19,6 +18,8 @@ import android.widget.ImageView;
 public class CustomImageView extends android.support.v7.widget.AppCompatImageView {
     Bitmap icon;
     Drawable mDrawable;
+    Bitmap mBitmap ;
+
 
 
     public CustomImageView(Context context) {
@@ -26,6 +27,8 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
         icon = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ic_launcher_background);
         mDrawable = context.getDrawable(R.drawable.ic_launcher);
+        mBitmap = Bitmap.createScaledBitmap(((BitmapDrawable)mDrawable).getBitmap(), 120, 120, false);
+
     }
 
     public CustomImageView(Context context,  AttributeSet attrs) {
@@ -34,6 +37,7 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
 
     public CustomImageView(Context context,  AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
     }
 
 
@@ -67,38 +71,7 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
         Bitmap roundBitmap = getFinalBitmap();
 
         canvas.drawBitmap(roundBitmap, 0, 0, null);
-        canvas.drawBitmap(b,roundBitmap.getWidth(),roundBitmap.getHeight(),null);
-
-    }
-    public static Bitmap getRoundedCroppedBitmap(Bitmap bitmap, int radius) {
-        Bitmap finalBitmap;
-        if (bitmap.getWidth() != radius || bitmap.getHeight() != radius)
-            finalBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius,
-                    false);
-        else
-            finalBitmap = bitmap;
-        Bitmap output = Bitmap.createBitmap(finalBitmap.getWidth(),
-                finalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, finalBitmap.getWidth(),
-                finalBitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setDither(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(Color.parseColor("#BAB399"));
-        canvas.drawCircle(finalBitmap.getWidth() / 2 + 0.7f,
-                finalBitmap.getHeight() / 2 + 0.7f,
-                finalBitmap.getWidth() / 2 + 0.1f, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(finalBitmap, rect, rect, paint);
-
-
-        canvas.drawBitmap(finalBitmap, rect, rect, paint);
-
-        return output;
+        canvas.drawBitmap(mBitmap,240,240,null);
     }
 
 
@@ -106,7 +79,7 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
     {
         Bitmap bitmap = Bitmap.createBitmap(
                 600, // Width
-                300, // Height
+                600, // Height
                 Bitmap.Config.ARGB_8888 // Config
         );
         Canvas canvas = new Canvas(bitmap);
@@ -133,11 +106,18 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
                 cornersRadius, // ry
                 paint // Paint
         );
-//        Bitmap b = ((BitmapDrawable) mDrawable).getBitmap();
-//        int startX= (canvas.getWidth()-b.getWidth())/2;//for horisontal position
-//        int startY=(canvas.getHeight()-b.getHeight())/2;
-//        canvas.drawBitmap(b,600,300,new Paint());
         return bitmap;
     }
 
+
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction,Rect previouslyFocusedRect) {
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+
+    }
+
+    @Override
+    public boolean callOnClick() {
+        return super.callOnClick();
+    }
 }
